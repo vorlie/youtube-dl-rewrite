@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>YouTube Downloader</title>
+    <link rel="stylesheet" href="source/styles.css">
+    <link rel="stylesheet" href="source/menu.css">
+  </head>
+  <body>
+    <label>
+        <input type="checkbox">
+        <span class="menu"> <span class="hamburger"></span></span>
+        <ul class="navbar-button">
+            <li class="navbar-button"><a class="navbar-button--link" href="https://github.com/vorlie" target="_blank">Author</a></li>
+            <li class="navbar-button"><a class="navbar-button--link" href="https://github.com/vorlie/youtube-dl-rewrite" target="_blank">Source</a></li>
+            <li class="navbar-button"><a class="navbar-button--link" href="https://github.com/vorlie/youtube-dl-rewrite/issues" target="_blank">Issues</a></li>
+            <li class="navbar-button"><a class="navbar-button--link" href="https://discord.gg/9n6bSUSy3Q" target="_blank">Discord Server</a></li>
+        </ul>
+    </label>
+    <div class="header">
+        <img class="header__icon" src="public/icon.png">
+        <p class="header__title">YouTube Downloader</p>
+    </div>
+    <div class="body">
+        <div class="usable-area">
+            <input class="videoUrl" type="text" id="videoUrl" placeholder="Enter YouTube/SoundCloud video URL">
+            <div class="buttons">
+                <button class="button" id="selectFolder">Choose a Folder</button>
+                <button class="button" id="downloadAudioButton">Download Audio</button>
+                <button class="button" id="downloadVideoButton">Download Video</button>
+            </div>
+            <div class="information">
+                <p id="outputPath">Path:  <span class="outputColor">/downloaded/</span></p>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <p class="footer__text">Made with ❤️ by <a class="footer__link" href="https://github.com/vorlie" target="_blank">vorlie</a></p>
+    </div>
+    <script src="renderer.js"></script>
+  </body>
+</html>
