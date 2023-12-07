@@ -1,20 +1,10 @@
-const { shell, dialog, remote } = require('electron');
-const { spawn } = require('child_process');
-const path = require('path');
-
-const dependenciesPath = path.join(__dirname, 'binaries');
-
-document.getElementById('openLink').addEventListener('click', (event) => {
-    event.preventDefault();
-    const url = event.target.dataset.url;
-    shell.openExternal(url);
-  });
 
 function downloadVideo(videoUrl, savePath) {
   const defaultSavePath = './downloaded';
+  const dependenciesPath = './binaries/';
 
   const outputPath = savePath || defaultSavePath;
-  const ytDlpPath = path.join(dependenciesPath, 'yt-dlp.exe');
+  const ytDlpPath = dependenciesPath +'yt-dlp.exe';
 
   try {
     spawn(ytDlpPath, ['-P', outputPath, videoUrl]);
@@ -25,10 +15,12 @@ function downloadVideo(videoUrl, savePath) {
 
 function downloadAudio(audioUrl, savePath) {
   const defaultSavePath = './downloaded';
+  const dependenciesPath = './binaries/';
   const ffmpegLocation = dependenciesPath;
+  
 
   const outputPath = savePath || defaultSavePath;
-  const ytDlpPath = path.join(dependenciesPath, 'yt-dlp.exe');
+  const ytDlpPath = dependenciesPath + 'yt-dlp.exe';
 
   try {
     spawn(ytDlpPath, [
@@ -47,29 +39,31 @@ function downloadAudio(audioUrl, savePath) {
 }
 
 async function selectFolder() {
-    const window = remote.getCurrentWindow();
-  
-    try {
-      const result = await dialog.showOpenDialog(window, {
-        properties: ['openDirectory']
-      });
-      const selectedPath = result.filePaths[0];
-      return selectedPath;
-    } catch (error) {
-      console.error('Failed to select folder:', error);
-    }
+  const window = remote.getCurrentWindow();
+
+  try {
+    const result = await dialog.showOpenDialog(window, {
+      properties: ['openDirectory']
+    });
+    const selectedPath = result.filePaths[0];
+    return selectedPath;
+  } catch (error) {
+    console.error('Failed to select folder:', error);
   }
+}
+
+const { electronBridge } = window || {};
 
 document.getElementById('downloadAudioButton').addEventListener('click', async () => {
-    const audioUrl = document.getElementById('videoUrl').value;
-    const savePath = await selectFolder();
-    downloadAudio(audioUrl, savePath);
-  });
-  
-  document.getElementById('downloadVideoButton').addEventListener('click', async () => {
-    const videoUrl = document.getElementById('videoUrl').value;
-    const savePath = await selectFolder();
-    downloadVideo(videoUrl, savePath);
-  });
+  const audioUrl = document.getElementById('videoUrl').value;
+  const savePath = await electronBridge.selectFolder();
+  electronBridge.downloadAudio(audioUrl, savePath);
+});
+
+document.getElementById('downloadVideoButton').addEventListener('click', async () => {
+  const videoUrl = document.getElementById('videoUrl').value;
+  const savePath = await electronBridge.selectFolder();
+  electronBridge.downloadVideo(videoUrl, savePath);
+});
 
 document.getElementById('selectFolder').addEventListener('click', selectFolder);
